@@ -11,7 +11,20 @@ NumFlat: 3 # nums of one part's flat featurel
 PartNum: 100 # nums of one scan's parts
 FlatThreshold: 0.02 # cloud curvature threshold of flat feature
 BreakCornerDis: 1 # break distance of break points
-LidarNearestDis: 1.0 # if(depth < LidarNearestDis) do not use this point 
+LidarNearestDis: 2.0 # if(depth < LidarNearestDis) do not use this point 
 KdTreeCornerOutlierDis: 0.2 # corner filter threshold
 Use_seg: 0 # use segment algorithm
 map_skip_frame: 2
+
+# 行人滤波
+filter_people: 1  # 0-不过滤行人   1-过滤行人
+people_center_x: 3.0  # 行人点云滤除的中心
+people_center_y: 0.0  
+people_center_z: 0.0  
+# 长方体滤波的相对于中心的偏移量 
+box_width_x_: 2.0   #减
+box_width_y_: 1.2  
+box_width_z_: 0.74  
+box_width_x: 4.0  #加
+box_width_y: 1.2  
+box_width_z: 1.2  

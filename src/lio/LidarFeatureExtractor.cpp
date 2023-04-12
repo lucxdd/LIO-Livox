@@ -1187,7 +1187,8 @@ void LidarFeatureExtractor::FeatureExtract(const livox_ros_driver::CustomMsgCons
                                            pcl::PointCloud<PointType>::Ptr& laserCloud,
                                            pcl::PointCloud<PointType>::Ptr& laserConerFeature,
                                            pcl::PointCloud<PointType>::Ptr& laserSurfFeature,
-                                           const int Used_Line,const int lidar_type){
+                                           double (&people_center)[3], double (&box_array)[6],
+                                           const int filter_people, const int Used_Line, const int lidar_type){
   laserCloud->clear();
   laserConerFeature->clear();
   laserSurfFeature->clear();
@@ -1245,6 +1246,22 @@ void LidarFeatureExtractor::FeatureExtract(const livox_ros_driver::CustomMsgCons
   for(int j=0; j<vsurf[i].size(); ++j){
   laserCloud->points[_float_as_int(vlines[i]->points[vsurf[i][j]].normal_z)].normal_z = 2.0;
   }
+  }
+  // TODO: kdtree剔除动态物体
+  // 邻域搜索
+  if(filter_people) {
+  pcl::CropBox<PointType> box_filter;  // 滤波器对象
+  box_filter.setMin(Eigen::Vector4f(people_center[0] - box_array[0],
+                                    people_center[1] - box_array[1],
+                                    people_center[2] - box_array[2], 1.0));
+  // Min和Max是指立方体的两个对角点。每个点由一个四维向量表示，齐次坐标）
+  box_filter.setMax(Eigen::Vector4f(people_center[0] + box_array[3],
+                                    people_center[1] + box_array[4],
+                                    people_center[2] + box_array[5], 1.0));
+  // false————box_filter存放的是盒子内的点，true————box_filter存放的是盒子以外的点
+  box_filter.setNegative(true);
+  box_filter.setInputCloud(laserCloud);  // 输入源点云
+  box_filter.filter(*laserCloud);        // 保留点云
   }
 
   for(const auto& p : laserCloud->points){

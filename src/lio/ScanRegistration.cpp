@@ -17,15 +17,31 @@ int N_SCANS = 6;
 bool Feature_Mode = false;
 bool Use_seg = false;
 
+bool filter_people = false;
+double people_center_x = 0.0;
+double people_center_y = 0.0;
+double people_center_z = 0.0;
+double box_width_x = 0.0;
+double box_width_y = 0.0;
+double box_width_z = 0.0;
+double box_width_x_ = 0.0;
+double box_width_y_ = 0.0;
+double box_width_z_ = 0.0;
+double people_center[3] ={0.0};
+double box_array[6] = {0.0};
+
 void lidarCallBackHorizon(const livox_ros_driver::CustomMsgConstPtr &msg) {
 
-  sensor_msgs::PointCloud2 msg2;
+  // TODO: 可以根据时间改变是否滤波以及搜索中心和box的大小
+  // if (msg->header.stamp.toSec() > xxxx) {}
 
+  sensor_msgs::PointCloud2 msg2;
+  
   if(Use_seg){
     lidarFeatureExtractor->FeatureExtract_with_segment(msg, laserCloud, laserConerCloud, laserSurfCloud, laserNonFeatureCloud, msg2,N_SCANS);
   }
   else{
-    lidarFeatureExtractor->FeatureExtract(msg, laserCloud, laserConerCloud, laserSurfCloud,N_SCANS,Lidar_Type);
+    lidarFeatureExtractor->FeatureExtract(msg, laserCloud, laserConerCloud, laserSurfCloud, people_center, box_array, filter_people, N_SCANS,Lidar_Type);
   } 
 
   sensor_msgs::PointCloud2 laserCloudMsg;
@@ -112,6 +128,17 @@ int main(int argc, char** argv)
   N_SCANS = static_cast<int>(fsSettings["Used_Line"]);
   Feature_Mode = static_cast<int>(fsSettings["Feature_Mode"]);
   Use_seg = static_cast<int>(fsSettings["Use_seg"]);
+  
+  filter_people = static_cast<int>(fsSettings["filter_people"]);
+  people_center_x = static_cast<double>(fsSettings["people_center_x"]);
+  people_center_y = static_cast<double>(fsSettings["people_center_y"]);
+  people_center_z = static_cast<double>(fsSettings["people_center_z"]);
+  box_width_x = static_cast<double>(fsSettings["box_width_x"]);
+  box_width_y = static_cast<double>(fsSettings["box_width_y"]);
+  box_width_z = static_cast<double>(fsSettings["box_width_z"]);
+  box_width_x_ = static_cast<double>(fsSettings["box_width_x_"]);
+  box_width_y_ = static_cast<double>(fsSettings["box_width_y_"]);
+  box_width_z_ = static_cast<double>(fsSettings["box_width_z_"]);
 
   int NumCurvSize = static_cast<int>(fsSettings["NumCurvSize"]);
   float DistanceFaraway = static_cast<float>(fsSettings["DistanceFaraway"]);
@@ -122,6 +149,15 @@ int main(int argc, char** argv)
   float LidarNearestDis = static_cast<float>(fsSettings["LidarNearestDis"]);
   float KdTreeCornerOutlierDis = static_cast<float>(fsSettings["KdTreeCornerOutlierDis"]);
 
+  people_center[0] = people_center_x;
+  people_center[1] = people_center_y;
+  people_center[2] = people_center_z;
+  box_array[0] = box_width_x_;
+  box_array[1] = box_width_y_;
+  box_array[2] = box_width_z_;
+  box_array[3] = box_width_x;
+  box_array[4] = box_width_y;
+  box_array[5] = box_width_z;
 
   laserCloud.reset(new pcl::PointCloud<PointType>);
   laserConerCloud.reset(new pcl::PointCloud<PointType>);

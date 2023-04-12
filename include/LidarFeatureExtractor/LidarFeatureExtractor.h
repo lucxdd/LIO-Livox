@@ -7,11 +7,14 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/kdtree/kdtree_flann.h>
+#include <pcl/filters/crop_box.h>
 #include <future>
 #include "opencv2/core.hpp"
 #include "segment/segment.hpp"
 class LidarFeatureExtractor{
     typedef pcl::PointXYZINormal PointType;
+    typedef pcl::PointCloud<PointType> PointCloudXYZINormal;
+
 public:
     /** \brief constructor of LidarFeatureExtractor
       * \param[in] n_scans: lines used to extract lidar features
@@ -83,7 +86,8 @@ public:
                         pcl::PointCloud<PointType>::Ptr& laserCloud,
                         pcl::PointCloud<PointType>::Ptr& laserConerFeature,
                         pcl::PointCloud<PointType>::Ptr& laserSurfFeature,
-                        int Used_Line = 1,const int lidar_type=0);
+                        double (&people_center)[3], double (&box_array)[6],
+                        int filter_people = 0, int Used_Line = 1,const int lidar_type=0);
 
     void FeatureExtract_hap(const livox_ros_driver::CustomMsgConstPtr &msg,
                             pcl::PointCloud<PointType>::Ptr& laserCloud,

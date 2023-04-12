@@ -1,3 +1,7 @@
+# zh
+位姿轨迹话题：/livox_odometry_mapped
+
+
 # LIO-Livox (A Robust LiDAR-Inertial Odometry for Livox LiDAR)
 This respository implements a robust LiDAR-inertial odometry system for Livox LiDAR. 
 The system uses only a single Livox LiDAR with a built-in IMU. It has a robust initialization module, 
