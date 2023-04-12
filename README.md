@@ -1,7 +1,12 @@
 # zh
+TODO:行人滤除可以根据时间改变搜索中心和box大小
+修改launch中的IMU_Mode
+修改yaml中的行人滤波参数
 位姿轨迹话题：/livox_odometry_mapped
+## 运行
+roslaunch lio_livox mid360.launch
 
-
+--------------------------------------------------------------------
 # LIO-Livox (A Robust LiDAR-Inertial Odometry for Livox LiDAR)
 This respository implements a robust LiDAR-inertial odometry system for Livox LiDAR. 
 The system uses only a single Livox LiDAR with a built-in IMU. It has a robust initialization module, 
