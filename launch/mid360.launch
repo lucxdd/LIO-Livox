@@ -9,7 +9,7 @@
 
     <node pkg="lio_livox" type="PoseEstimation" name="PoseEstimation" output="screen">
         <!-- 0-Not Use IMU, 1-Use IMU remove Rotation Distort, 2-Tightly Coupled IMU -->
-        <param name="IMU_Mode" type="int" value="2" />
+        <param name="IMU_Mode" type="int" value="1" />
         <!-- Voxel Filter Size Use to Downsize Map Cloud -->
         <param name="filter_parameter_corner" type="double" value="0.2" />
         <param name="filter_parameter_surf" type="double" value="0.4" />

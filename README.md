@@ -1,6 +1,5 @@
 # zh
-TODO:行人滤除可以根据时间改变搜索中心和box大小
-修改launch中的IMU_Mode
+修改launch中的IMU_Mode 0:纯激光；1：IMU用于去畸变；2：紧耦合
 修改yaml中的行人滤波参数
 位姿轨迹话题：/livox_odometry_mapped
 ## 运行
