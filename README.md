@@ -1,4 +1,4 @@
-# zh
+# lcx
 ```
 修改launch中的IMU_Mode 0:纯激光；1：IMU用于去畸变；2：紧耦合
 修改yaml中的行人滤波参数
